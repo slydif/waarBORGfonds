@@ -1,0 +1,8 @@
+{
+    "stepperMaxSpeed": 100.0,
+    "stepperAcceleration": 5.0,
+    "stepperLeftPos" : 0,
+    "stepperRightPos": 32,
+    "measureInterval_ms": 300
+}
+
