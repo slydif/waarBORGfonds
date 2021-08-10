@@ -69,14 +69,14 @@ void onRadarMeasure()
       break;
     case isrMsMeasuringEcho:
       pulsLength++;
-      if(digitalRead(PIN_SONIC_ECHO))
+      if(!digitalRead(PIN_SONIC_ECHO))
       {
         ISRMeasureStep=isrMsAnswer;
       }
       break;
     case isrMsAnswer:
       portENTER_CRITICAL_ISR(&dataAccessMux);
-      data.radarDistanceMm = pulsLength>2000 ? -1.0 : pulsLength*0.34/2;
+      data.radarDistanceMm = pulsLength>2000 ? -1.0 : pulsLength*0.343/2;
       data.startMeasure=false;
       portEXIT_CRITICAL_ISR(&dataAccessMux); 
       ISRMeasureStep=isrMsIdle;

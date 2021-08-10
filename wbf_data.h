@@ -8,10 +8,11 @@
 
 #define STEPPERLEFTPOS 0
 #define STEPPERRIGHTPOS 48
+#define ANSWER_ARRSIZE 5
+#define RADAR_ARRAY_SIZE STEPPERRIGHTPOS-STEPPERLEFTPOS+1
 
 // ======== CONSTANTS ================
 const char *CONFIG_FILE = "/config.jsn";
-const int RADAR_ARRAY_SIZE = STEPPERRIGHTPOS-STEPPERLEFTPOS+1;
 
 // ======== DATA TYPES ============= 
 enum tScreen          {scRadar};
@@ -19,7 +20,7 @@ enum tSwitchEvent     {seStart,   seCompressorOn,  seCompressorOff,  seAlarm,   
 enum tISRMeasureStep  {isrMsIdle, isrMsTriggering, isrMsWaitingEcho, isrMsMeasuringEcho, isrMsAnswer};
 enum tMeasureStep     {msIdle,    msWaitAnswer};
 enum tSweepStep       {ssInit,    ssForward,       ssBack};
-enum tGameplayStep    {gpIdle};
+enum tGameplayStep    {gpIdle,    gpQ1,            gpQ2};
 
 
 typedef struct _tMeasurement  
@@ -35,6 +36,11 @@ typedef struct _tPositionData
   bool processed=true;
 } tPositionData;
 
+typedef struct _tCanPositions
+{
+  int pos1;
+  int pos2;
+} tCanPositions;
 
 class tData 
 {
@@ -55,6 +61,11 @@ class tData
     bool sweepReInit=false;
     bool sweepBackward=false;
     long sweepPosition=-1;
+
+    //gameplay
+    tGameplayStep gameStep=gpIdle;
+    bool allAnswersOk=false;
+
     
     // Initialize data 
     tData() 
@@ -70,10 +81,15 @@ class tConfig
     double stepperAcceleration=5.0;
     double tftMaxRadarAngle=90;//Angle of radar Pie
     double tftMaxDistMm=300;//Max shown measurement (for scaling to tft)
+    tCanPositions answerArr[ANSWER_ARRSIZE];
 
     //initialize
     tConfig() 
     {
+      answerArr[1].pos1=5;
+      answerArr[1].pos2=22;
+      answerArr[2].pos1=12;
+      answerArr[2].pos2=23;
     }//tConfig
   
     void Load() 

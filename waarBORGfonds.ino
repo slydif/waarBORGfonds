@@ -12,6 +12,7 @@
 #include "wbf_1sweep.h"
 #include "wbf_2display.h"
 #include "wbf_3measure.h"
+#include "wbf_4gameplay.h"
 
 using namespace std;
 
@@ -69,6 +70,7 @@ void setup()
   setupSweep();
   setupMeasure();
   setupDisplay();  
+  setupGameplay();
 }
 
 void loop() 

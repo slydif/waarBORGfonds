@@ -60,6 +60,7 @@ void taskSweep(void *parameter)
           if(data.sweepReInit)
           {
             sweepStep=ssInit;
+            data.sweepReInit=false;
           }else
           {
             stepper.moveTo(leftPos);
